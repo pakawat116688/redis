@@ -10,11 +10,11 @@ services:
       # - ./schema/initdb.sql:/data/application/init.sql
     restart: always
     environment:
-      - TZ=Asia/Bangkok
       - MYSQL_ROOT_PASSWORD=passw0rd
-      - MYSQL_USER=root
+      # - MYSQL_USER=productown
       - MYSQL_DATABASE=product
-      - MYSQL_PASSWORD=passw0rd
+      # - MYSQL_PASSWORD=passw0rd
+      # - MARIADB_ROOT_HOST=%
     # command: --init-file /data/application/init.sql
 
   redis:

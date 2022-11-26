@@ -22,7 +22,7 @@ func NewProductRedis(db *gorm.DB, redisClient *redis.Client) ProductRepository  
 
 func (r productRedis) GetProduct() (products []product, err error)  {
 
-	key := "myproduct::getproduct"
+	key := "repository::getproduct"
 	productjson, err := r.redisClient.Get(context.Background(), key).Result()
 	if err == nil {
 		err = json.Unmarshal([]byte(productjson), &products)

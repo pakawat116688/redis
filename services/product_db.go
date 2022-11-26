@@ -10,7 +10,21 @@ func NewProductService(proSrv repositories.ProductRepository) ProductService {
 	return productService{proSrv: proSrv}
 }
 
-func (s productService) ServiceGetProduct() ([]productResponse, error)  {
+func (s productService) ServiceGetProduct() (productRes []productResponse, err error)  {
+
+	data, err := s.proSrv.GetProduct()
+	if err != nil {
+		// should custom err
+		return nil, err
+	}
 	
-	return nil, nil
+	for _, values := range data {
+		cleanData := productResponse{
+			Name: values.Name,
+			Qty: values.Qty,
+		}
+		productRes = append(productRes, cleanData)
+	}
+
+	return productRes, nil
 }
