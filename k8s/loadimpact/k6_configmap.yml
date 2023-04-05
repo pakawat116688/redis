@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k6-configmap
+  namespace: dev-env
+data:
+  test.js: |- 
+    import http from 'k6/http'
+
+    export let options = {
+        vus: 5,
+        duration: '5s'
+    }
+
+    export default function() {
+        http.get("http://goapp-service:8000/products")
+    }
+
+  test_redis.js: |-
+    import http from 'k6/http'
+
+    export let options = {
+        vus: 5,
+        duration: '5s'
+    }
+
+    export default function() {
+        http.get("http://goapp-service:8000/products/redis")
+    }

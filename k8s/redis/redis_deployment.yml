@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  namespace: dev-env
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+          - mountPath: /data
+            name: redis-data
+          - mountPath: /redis
+            name: redis-conf
+        command:
+          - "redis-server"
+          - "/redis/redis.conf"
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: redis-pvc
+        - name: redis-conf
+          configMap:
+            name: redis-configmap
+            items:
+              - key: redis.conf
+                path: redis.conf

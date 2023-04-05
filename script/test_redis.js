@@ -6,5 +6,5 @@ export let options = {
 }
 
 export default function() {
-    http.get("http://host.docker.internal:8000/products/redis")
+    http.get("http://goapp-service:30008/products/redis")
 }

@@ -1,25 +1,20 @@
-FROM golang:1.19.3-buster AS build
+# Build stage
+FROM golang:1.17-alpine as build
 
 WORKDIR /app
 
-COPY go.mod ./
-
-COPY go.sum ./
-
+COPY go.mod go.sum ./
 RUN go mod download
 
-COPY . ./
+COPY . .
 
-ENV GOARCH=amd64
+RUN CGO_ENABLED=0 GOOS=linux go build -o app .
 
-RUN go buld -o /go/bin/app
-
-
-## Deploy
+# Deploy stage
 FROM gcr.io/distroless/base-debian11
 
-COPY --from=build /go/bin/app /app
+COPY --from=build /app/app /app/app
 
 EXPOSE 8000
 
-CMD ["/app"]
+ENTRYPOINT ["/app/app"]

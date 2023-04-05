@@ -13,7 +13,7 @@ import (
 
 func main()  {
 
-	dsn := "root:passw0rd@tcp(localhost)/product?parseTime=true"
+	dsn := "root:passw0rd@tcp(mariadb-service)/product?parseTime=true"
 	director := mysql.Open(dsn)
 	db, err := gorm.Open(director)
 	if err != nil {
@@ -21,7 +21,7 @@ func main()  {
 	}
 
 	myRedis := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
+		Addr: "redis-service:6379",
 	})
 
 	redisRepo := repositories.NewProductRedis(db,myRedis)
